@@ -1,213 +1,299 @@
-<h1 align = "center">VIEWE ESP32-S3 Smart Display Quick Guide </h1>
-<p align="center">
-    <img src="image/4_3inch.jpg" alt="">
-    <h1 align = "center" style="font-size: 18px;">Model: UEDX48270043E-WB-A</h1>
-</p>
+<h1 align = "center">VIEWE 4.3" 480*272 ESP32-S3 Smart Display Quick Guide </h1>
 
 * **[中文版](./README_CN.md)**
-
-## Directory
-- [Repository Directory Overview](#repository-directory-overview)
-- [PurchaseLink](#purchaseLink)
-- [Hardware Overview](#hardware-overview)
-- [QuickStart](#quickstart)
-- [PinOverview](#pinoverview)
-- [Schematic](#schematic)
-- [Information](#information)
-- [firmware download](#firmware-download)
-- [FAQ](#faq)
-
-## Repository Directory Overview
-
-```
-├── Libraries         Library files required for the Arduino example  
-├── Schematic         The circuit schematic of the product   
-├── datasheet         Product specifications, including the IC or peripherals involved
-├── examples          Sample files, including the IDF framework and the Arduino framework
-├── image             Product or sample project related images
-├── README_CN.md      Chinese version Quick Guide and Product Brief
-└── README.md         English version of the quick guide and product introduction
-```
-
-## PurchaseLink
-
-| Product                     | SOC           |  FLASH  |  PSRAM   | Link                   |
-| :------------------------: | :-----------: |:-------: | :---------: | :------------------: |
-| UEDX48270043E-WB-A V1.1   | ESP32S3R8 |   16M   | 8M (Octal SPI) | [VIEWE Mall](https://viewedisplay.com/product/esp32-4-3-inch-480x272-rgb-ips-tft-display-touch-screen-arduino-lvgl-wifi-ble-uart-smart-module/)  |
-
-## Hardware Overview
-
-### 1.MCU
-* Chip: `ESP32-S3-N16R8`
-* PSRAM: `8M (Octal SPI)`
-* FLASH: `16M`
-* For more details, please visit [Espressif ESP32-S3 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf)
-
-### 2. Screen
-* Size: 4.3-inch IPS screen
-* Resolution: 480x272px
-* Screen type: IPS
-* Driver chip: `ST7262E43-G4`
-* Compatibility library:  ESP32_Display_Panel
-* Bus communication protocol: RGB
-* For more details：[Display Datasheet](https://github.com/VIEWESMART/UEDX48270043E-ESP32-4.3inch-Touch-Display/blob/main/datasheet/LCM-UE043HV-RB40-L083A%20SPEC.pdf)
   
-Note: The model name is determined by the screen resolution and size
-
-### 3. Touch
-* Chip: `GT911`
-* Bus communication protocol: IIC
-* For more details：[Touch IC Datasheet_EN](datasheet/GT911_EN_Datasheet.pdf)
-
-## Hardware Connections
-- Connect the screen ribbon cable and touch ribbon cable (gold contacts 
- facing up).
-- USB-C power supply (5V/1A adapter).
-- UART for programming, debugging, or power supply (5V/1A adapter).
-- For the first programming, press and hold the `BOOT` button to enter 
- download mode.
-<p align="center" width="100%">
-    <img src="image/overview.png" alt="TODO: Fix overview.png example">
+<p align="center">
+    <img src="image/Main.png" alt="">
 </p>
 
+---
 
-## QuickStart
+## 1. Introduction
 
-### Software Framework Configuration
+UEDX80480043E-WB-B is a high-performance smart display development board based on the ESP32-S3, featuring a 4.3-inch RGB touch screen (800x480). It is designed by VIEWE and is suitable for IoT and HMI applications requiring rich peripheral interfaces and Wi-Fi/BLE connectivity.
 
-| Support IDE | Version |
-| ------  | ------  |
-| `[ESP-IDF]` | `[V5.1/5.2/5.3]` |
-| `[Arduino IDE]` | `[esp32 >=v3.2.1]` | 
-| `[Platformio IDE]` |  |
-### ESP-IDF Framework ([Novice tutorial]())
-- Supported Versions: v5.1/5.2/5.3
-- Download the example code from the repository and compile/run it directly.
-- Repository Address: [examples](examples/esp_idf)
+> [!NOTE]
+> To distinguish between the **800 x 480** and **480 x 272** kit versions, we have named this development board assembly **PLCM-UEDX48270043E-WB-A** based on the resolution of the display screen. The PCB development boards uniformly adopt the designation **UEDX80480043E-WB-A / B**. Please pay attention to the distinction.
+> The UEDX80480043E-WB-A development board will be gradually phased out and replaced by the UEDX80480043E-WB-B development board.
+> New designs are recommended to migrate to this version.
 
-### Arduino Framework ([Novice tutorial]())
-1. Install [Arduino](https://www.arduino.cc/en/software), Choose installation based on your system type.
-2. Install the ESP32 core: Search for and download `esp32`(by Espressif >= v3.2.1) in the `Board Manager`.
-3. Install the required libraries:
-    * Search and install `ESP32_Display_Panel` (v1.0.3). Select `Yes` for automatic dependency installation.
-    * Install the `LVGL` (v8.4.0) library. 
-4. Open the example: `ESP32_Display_Panel`-> `examples` -> `arduino` -> `gui` -> `lvgl_v8`.
-5. Configure the development board:
-    * Edit the `esp_panel_board_supported_conf.h` file:
-      * Enable the macro: `#define ESP_PANEL_BOARD_DEFAULT_USE_SUPPORTED  (1)`
-      * Uncomment the corresponding screen model definition: `#define BOARD_VIEWE_UEDX48270043E_WB_A`
-6. Configure tool options (S3):
-   
-    | Setting                               | Value                         |
-    | :-------------------------------: | :-------------------------------: |
-    | Board                                 | ESP32S3 Dev Module            |
-    | Core Debug Level                | None                                |
-    | USB CDC On Boot                | Disabled                             |
-    | USB DFU On Boot                | Disabled                             |
-    | Flash Size                           | 16MB (128Mb)                   |
-    | Partition Scheme                | 16M Flash (3MB APP/9.9MB FATFS)     |
-    | PSRAM                                | OPI PSRAM                      |
-   
-7. Select the correct port.
-8. Click "<kbd>[√](image/8.png)</kbd>" in the upper right corner to compile,If the compilation is correct, connect the microcontroller to the computer,Click "<kbd>[→](image/9.png)</kbd>" in the upper right corner to download.
+### 1.1 Product Features
 
-### PlatformIO ([Novice tutorial]())
-1. Install [VisualStudioCode](https://code.visualstudio.com/Download), Choose installation based on your system type.
+**CPU:**
+- **Processor**
+  - Equipped with an Xtensa 32-bit LX7 dual-core processor, with a main frequency up to 240 MHz.
+  - Integrated Wi-Fi 2.4GHz (802.11 b/g/n) and Bluetooth 5 (LE) & BLE Mesh.
+- **Memory**
+  - 8 MB PSRAM.
+  - 16 MB Flash.
+- **Peripheral Interfaces**
+  - Two 2\*20 Pin Headers are on-board, breaking out multiple programmable GPIOs, supporting SPI, UART, I2C, I2S, LCD, Camera, USB OTG, and other interfaces.
+  - On-board USB Type-C port for power supply, programming, and serial debugging (CH340C).
+  - On-board Micro SD card slot (SPI interface).
+  - Reset and Boot buttons.
 
-2. Open the "Extension" section of the Visual Studio Code software sidebar(Alternatively, use "<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>" to open the extension), Search for the "PlatformIO IDE" extension and download it.
+**Display:**
+- Size: 4.3 Inch
+- Resolution:  480 * 272
+- Pixel Arrangement：RGB Vertical Stripe
+- Interface Mode：40PIN RGB 24bits
+- Driver IC： IL6485A-M0T0061
+- Touch IC: GT911
+- Brightness: 250 cd/m²
+- Touch: CTP
 
-3. During the installation of the extension, you can go to GitHub to download the program. You can download the main branch by clicking on the "<> Code" with green text.
+**Other:**
+- Operation Temperature：-20~70℃
+- Storage Temperature：-30~80℃
 
-4. After the installation of the extension is completed, open the Explorer in the sidebar(Alternatively, use "<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>E</kbd>" go open it), Click "Open Folder", find the project code you just downloaded (the entire folder), then find the PlatformIO folder and click "Add". At this point, the project file will be added to your workspace.
+### 1.2 Applications
 
-5. Open the "platformio.ini" file in the project folder (PlatformIO will automatically open the "platformio.ini" file corresponding to the added folder). Under the "[platformio]" section, uncomment and select the example program you want to burn (it should start with "default_envs = xxx") Then click "<kbd>[√](image/4.png)</kbd>" in the bottom left corner to compile,If the compilation is correct, connect the microcontroller to the computer and click "<kbd>[→](image/5.png)</kbd>" in the bottom left corner to download the program.
+With rich connectivity and powerful processing capabilities, the UEDX80480043E-WB-B is an ideal choice for IoT devices in the following areas:
 
-## Pin Overview
+- Smart Home Control Panels
+- Industrial Automation HMI
+- Smart Appliances
+- Consumer Electronics
+- Wireless Data Loggers
+- Touch Screen Interfaces
+- Educational Learning Platforms
 
-| IPS Screen Pin  | ESP32S3 Pin|
-| :------------------: | :------------------:|
-| DE         | IO40       |
-| VS         | IO41       |
-| HS         | IO39       |
-| PCLK       | IO42       |
-|   R0       |  IO45   |
-|   R1       |  IO48   |
-|   R2       |  IO47   |
-|   R3       |  IO21   |
-|   R4       |  IO14   |
-|   G0       |  IO5   |
-|   G1       |  IO6   |
-|   G2       |  IO7   |
-|   G3       |  IO15   |
-|   G4       |  IO16   |
-|   G5       |  IO4   |
-|   B0       |  IO8   |
-|   B1       |  IO3   |
-|   B2       |  IO46   |
-|   B3       |  IO9   |
-|   B4       |  IO1   |
-| BACKLIGHT  | IO2       |
+---
 
-| Touch Chip Pin  | ESP32S3 Pin|
-| :------------------: | :------------------:|
-| RST         | IO38 |
-| INT         | IO18 |
-| SDA         | IO19 |
-| SCL         | IO20 |
+## 2. Product information
 
-| USB (CH340C) Pin  | ESP32S3 Pin|
-| :------------------: | :------------------:|
-| D+(USB-DP)    | IO20       |
-| D-(USB-DN)    | IO19       |
+### 2.1 Interface Description
 
-| button Pin  | ESP32S3 Pin|
-| :------------------: | :------------------:|
-|   boot    | IO0       |
-|   reset   | chip-en   |
+![Board Layout](image/Layout.png)
 
-| SD Card Pin | ESP32S3 Pin |
-| :---------: | :---------: |
-| CS          | IO10        |
-| MOSI        | IO11        |
-| SCK         | IO12        |
-| MISO        | IO13        |
+1. **Main Control Chip:** ESP32S3-MCN16R8  
+   Dual-core processor, up to 240MHz operating frequency.
 
-| UART/RS485 Pin  | ESP32S3 Pin|
-| :------------------: | :------------------:|
-| UARTTX         | IO43(RXD0)      |
-| UARTRX         | IO44(TXD0)      |
+2. **Display Interface:**  
+   40-Pin RGB 24-bit display output, supporting R0-R7, G0-G7, B0-B7. However, only RGB565 can be used due to chip limitations. Please refer to the following Display Interface table for specific I/O details and descriptions.
 
-| RGB LED Pin  | ESP32S3 Pin|
-| :------------------: | :------------------:|
-| RGB LED         | IO0 |
+3. **SD Card Slot**  
+   SPI interface connected for external storage expansion.
 
-## Schematic
-<p align="center" width="100%">
-    <a href="Schematic/UEDX48270043E-sch.png" target="_blank">
-        <img src="Schematic/UEDX48270043E-sch_thumb.png" alt="schematic">
-    </a>
-</p>
+4. **Touch interface**  
+   I2C interface (SDA/SCL), plus interrupt and reset pins for GT911 CTP. Please refer to the following TP Interface table for specific I/O details and descriptions.
 
-## Information
-[Products specification](datasheet/UEDX48270043E-WB-A%20V3.1%20SPEC.pdf)
+5. **USB Type-C interface**  
+   Used for 5V DC power supply.
 
-[Display Datasheet](datasheet/LCM-UE043HV-RB40-L083A%20SPEC.pdf)
+6. **UART Serial port**  
+   Standard TX/RX connectivity for debugging or communication.
 
-[Touch IC Datasheet_EN](datasheet//GT911_EN_Datasheet.pdf)
+7. **RGB-LED (WS2812B)**
 
-[Touch IC Datasheet_CN](datasheet/GT911_CN_Datasheet.pdf)
+8. **Boot Buttons**  
+   BOOT button (GPIO0) for firmware download mode.
 
-[5050RGB-LED](datasheet//C2843785_RGB%2BLED(Built-in%20IC)_XL-5050RGBC-WS2812B_specification_WJ1123912.PDF)
+9. **Reset Buttons**  
+   RESET button (CHIP-EN) for resetting the board.
 
-[CH340C](datasheet//C84681_USB%20Conversion%20chip_CH340C_specification_WJ1187874.PDF)
+10. **4-pin 1.5mm**  
+    You can choose to use I2C, UART and other interfaces according to your actual situation. If you are worried about interference, you can remove the RGB lights on the development board.
 
-## Firmware download
+11. & 12. **External GPIO Headers**  
+    Dual-row 2\*21 headers providing access to a wide range of GPIOs, including ADC, touch sensors, and standard digital I/O.
 
-TODO: This section is outdated:
+#### Display Interface
 
-1. Open the project file `tools` and locate the ESP32 burning tool. Open it.
+| Pin No. | Symbol | I/O | Description |
+|---------|--------|-----|-------------|
+| 1       | LEDK   | P   | Power supply for backlight cathode |
+| 2       | LEDA   | P   | Power supply for backlight anode |
+| 3       | GND    | P   | Power Ground |
+| 4       | VDD    | P   | Power supply to the internal logic power regulator (3.3V) |
+| 5-12    | R0-R7  | I   | Red data input. |
+| 13-20   | G0-G7  | I   | Green data input. |
+| 21-28   | B0-B7  | I   | Blue data input. |
+| 29      | GND    | P   | Power Ground |
+| 30      | CLK    | I   | Pixel clock input pin, Negative polarity |
+| 31      | DISP   | I   | Standby mode. Normally pulled high. |
+| 32      | HSYNC  | I   | Horizontal sync signal, Negative polarity |
+| 33      | VSYNC  | I   | Vertical sync signal, Negative polarity |
+| 34      | DEN    | I   | Data input enable. Display access is enabled when DE is “H” |
+| 35      | NC     | I   | Dummy |
+| 36      | GND    | P   | Power Ground |
+| 37      | XR     | -   | Dummy |
+| 38      | YD     | -   | Dummy |
+| 39      | XL     | -   | Dummy |
+| 40      | YU     | -   | Dummy |
 
-2. Select the correct burning chip and burning method, then click `OK.` As shown in the picture, follow steps 1->2->3->4->5 to burn the program. If the burning is not successful, press and hold the `BOOT-0` button and then download and burn again.
+*I：Input；O：Output；P：Power*
+
+#### TP Interface
+
+| Pin No. | Symbol  | I/O | Description |
+|---------|---------|-----|-------------|
+| 1       | GPIO20  | P   | TP SCL |
+| 2       | GPIO19  | P   | TP SDA |
+| 3       | GPIO18  | P   | INT (It's not actually used) |
+| 4       | GND     | P   | Power Ground |
+| 5       | VDD     | I   | Power supply to the internal logic power regulator (3.3V) |
+| 6       | GPIO38  | I   | RTP-csb-CTP-rst |
+| 7       | GND     | P   | Power Ground |
+| 8       | GND     | P   | Power Ground |
+
+### 2.2 GPIO Definition
+
+![Pin Introduction](image/GPIO.png)
+
+---
+
+## 3. Functional Block Diagram
+
+![Pin Introduction](image/Functional.png)
+
+> **Note:** The ESP32-S3 features a 2.4 GHz radio that supports Wi-Fi (802.11 b/g/n) and Bluetooth 5 (LE). Because they share the same RF front-end, Wi-Fi and BLE cannot transmit or receive simultaneously; the radio switches between protocols as needed. This is indicated by “Shared Radio” in the block.
+
+---
+
+## 4. Software
+
+We provide comprehensive support for **Arduino**, **PlatformIO**, and **ESP-IDF** frameworks, with pre-ported **LVGL** examples.
+
+### 4.1 Software Examples
+Examples are available in the [GitHub Repository(examples)](/examples).
+
+| Framework | Example Path | Description |
+| :--- | :--- | :--- |
+| **Arduino** | `examples/arduino/gui/lvgl_v8` | **LVGL Benchmark**: Demonstrates 480x272 UI rendering. It can also be directly opened in the Arduino IDE. |
+| **esp-idf** | `examples/esp_idf/sd_card_spi` | **sd_card**: Examples of using an SD card on a device |
+| **PlatformIO**| `examples/platformio/lvgl_v8_port` | **lvgl v8 port**: Usage example of lvgl v8. |
+
+### 4.2 Getting Started
+
+#### 4.2.1 Preparation
+* **Hardware**: PLCM-UEDX48270043E-WB-A or PLCM-UEDX48270043E-WB-B Board, USB-C Cable.
+* **Software**: VS Code (ESP-IDF v5.3+) or Arduino IDE (v2.0+) or VS Code (PlatformIO).
+* **Library**: The following libraries are needed for Arduino IDE and PlatformIO
+
+    |Libraries|version|Description|
+    | :--- | :--- | :--- |
+    |`ESP32_Display_Panel`| `1.0.3+` |by Espressif, This is necessary to drive the screen.|
+    |`ESP32_IO_Expander`| `Arduino automatic selection` |The dependency library of `ESP32_Display_Panel` should be selected for installation together during the installation process.|
+    |`esp-lib-utils`| `Arduino automatic selection` |The dependency library of `ESP32_Display_Panel` should be selected for installation together during the installation process.|
+    |`lvgl`| `8.4.0` | A free and open-source embedded graphics library. |
+
+#### 4.2.2  ESP-IDF Setup
+1.  **Open platformio example**
+    * go to GitHub to download the program. You can download the main branch by clicking on the "<> Code" with green text
+    * Open the example using VS Code(ESP-IDF)
+2.  **Compile and upload**:
+    * Click `build` in the upper right corner to compile.
+    * connect the microcontroller to the computer.If the compilation is correct.
+    * Click `upload` in the upper right corner to download.
+
+#### 4.2.3 Arduino Setup([Novice tutorial](https://github.com/VIEWESMART/VIEWE-Tutorial/blob/main/Arduino%20Tutorial/Arduino%20Getting%20Started%20Tutorial.md))
+1.  **Install ESP32 Board Package**:
+    * Go to *Tools > Board > Boards Manager*.
+    * Search `esp32` by Espressif and install version **3.0.0+**.
+2.  **Install Libraries**:
+    * Go to *Sketch > Include Library > Library Manager*.
+    * Search `ESP32_Display_Panel` by Espressif and install version **1.0.3+**. You will be prompted whether to install its dependencies, please click **INSTALL ALL** to install all.
+    * Install `lvgl` (v8.4.0 recommended).
+3.  **Open example**:
+    * Navigate to `File` > `Examples` > `ESP32_Display_Panel`
+    * Select `Arduino` > `gui` > `lvgl_v8` > `simple_port`
+4.  **Select Board**:
+    * Target: `ESP32S3 Dev Module`.
+    * Settings:
+        * **Flash Size**: 16MB (128Mb)
+        * **Partition Scheme**: 16M Flash (3MB APP/9.9MB FATFS)
+        * **PSRAM**: **OPI PSRAM** (Crucial!)
+5.  **config esp supported panel board**:
+    * Open the `esp_panel_board_supported_conf.h` file in the example
+    * Enable this file: change the `ESP_PANEL_BOARD_DEFAULT_USE_SUPPORTED` macro definition to `1`
+    * ensure you uncomment: `#define BOARD_VIEWE_UEDX48270043E_WB_A`
+    ```c
+    ...
+    /**
+    * @brief Flag to enable supported board configuration (0/1)
+    *
+    * Set to `1` to enable supported board configuration, `0` to disable
+    */
+    #define ESP_PANEL_BOARD_DEFAULT_USE_SUPPORTED       (1)
+    ...
+    // #define BOARD_VIEWE_SMARTRING
+    // #define BOARD_VIEWE_UEDX24240013_MD50E
+    // #define BOARD_VIEWE_UEDX24320024E_WB_A
+    // #define BOARD_VIEWE_UEDX24320028E_WB_A
+    // #define BOARD_VIEWE_UEDX24320035E_WB_A
+    // #define BOARD_VIEWE_UEDX32480035E_WB_A
+    // #define BOARD_VIEWE_UEDX46460015_MD50ET
+    #define BOARD_VIEWE_UEDX48270043E_WB_A
+    // #define BOARD_VIEWE_UEDX48480021_MD80E_V2
+    // #define BOARD_VIEWE_UEDX48480021_MD80E
+    // #define BOARD_VIEWE_UEDX48480021_MD80ET
+    // #define BOARD_VIEWE_UEDX48480028_MD80ET
+    // #define BOARD_VIEWE_UEDX48480040E_WB_A
+    // #define BOARD_VIEWE_UEDX80480043E_WB_A
+    // #define BOARD_VIEWE_UEDX80480050E_AC_A
+    // #define BOARD_VIEWE_UEDX80480050E_WB_A
+    // #define BOARD_VIEWE_UEDX80480050E_WB_A_2
+    // #define BOARD_VIEWE_UEDX80480070E_WB_A
+    ...
+    ```
+6.  **Configure the example**:
+    - [Optional] Edit the macro definitions in the `lvgl_v8_port.h` file
+        - **If using `RGB/MIPI-DSI` interface**, change the `LVGL_PORT_AVOID_TEARING_MODE` macro definition to `1`/`2`/`3` to enable the avoid tearing function. After that, change the `LVGL_PORT_ROTATION_DEGREE` macro definition to the target rotation degree
+        - **If using other interfaces**, please don't modify the `LVGL_PORT_AVOID_TEARING_MODE` and `LVGL_PORT_ROTATION_DEGREE` macro definitions
+    - [Optional] Edit the macro definitions in the `lv_conf.h` file
+        - **If using `SPI/QSPI` interface**, change the `LV_COLOR_16_SWAP` macro definition to `1`.
+7.  **Select the correct port**:
+    * Connect to the device.
+    * Go to *Tools > Port*, Select the corresponding port.
+8.  **Compile and upload**:
+    * Click `√` in the upper right corner to compile.
+    * connect the microcontroller to the computer.If the compilation is correct.
+    * Click `→` in the upper right corner to download.
+
+
+> [!TIP]
+> **Configuration**: In `esp_panel_board_supported_conf.h`, ensure you uncomment:
+> `#define BOARD_VIEWE_UEDX48270043E_WB_A`
+> Do not enable both `ESP_PANEL_BOARD_DEFAULT_USE_SUPPORTED` and `ESP_PANEL_BOARD_DEFAULT_USE_CUSTOM`
+> You cannot enable multiple esp supported panel boards at the same time.
+
+#### 4.2.4 PlatformIO Setup
+1.  **Open platformio example**
+    * go to GitHub to download the program. You can download the main branch by clicking on the "<> Code" with green text
+    * Open the example using VS Code(PlatformIO)
+2.  **Configure PlatformIO**:
+    * This example uses the `BOARD_ESPRESSIF_ESP32_S3_LCD_EV_BOARD_2_V1_5` board as default. Choose `BOARD_VIEWE_UEDX48270043E_WB_A` in the `[platformio]:default_envs` of the `platformio.ini` file.
+3.  **Configure the example**:
+    - [Optional] Edit the macro definitions in the `lvgl_v8_port.h` file
+        - **If using `RGB/MIPI-DSI` interface**, change the `LVGL_PORT_AVOID_TEARING_MODE` macro definition to `1`/`2`/`3` to enable the avoid tearing function. After that, change the `LVGL_PORT_ROTATION_DEGREE` macro definition to the target rotation degree
+        - **If using other interfaces**, please don't modify the `LVGL_PORT_AVOID_TEARING_MODE` and `LVGL_PORT_ROTATION_DEGREE` macro definitions
+4.  **Compile and upload the project**
+    - Click the `√`(Compile) button
+    - Connect the board to your computer.If the compilation is correct.
+    - Click the `→`(upload) button
+---
+
+## 5. Related Documents
+
+- [products specification(WB-A)](datasheet/PLCM-UEDX80480043E-WB-A%20V3.2%20SPEC.pdf)
+- [products specification(WB-B)](datasheet/PLCM-UEDX80480043E-WB-B%20V1.0%20SPEC.pdf)
+- [UEDX80480043E-WB-A Schematic Diagram (PDF)](Schematic/PCB-UEDX48480043E-WB-A%20V1.3.SCH.pdf)
+- [UEDX80480043E-WB-B Schematic Diagram (PDF)](Schematic/PCB-UEDX80480043E-WB-B.pdf)
+- [2D Drawing (dwg)](2D%20drawings/PLCM-DX80480043E-WB-B.dwg)
+- [Display Specification (PDF)](datasheet/UE043HV-RN40-A058B_V1.1.pdf)
+- [Display Chip Specification (PDF)](datasheet/ILI6485_DTS_V008_20201113.pdf)
+- [Touch Chip Specification (Chinese)](datasheet/n/GT911_CN_Datasheet.pdf)
+- [Touch Chip Specification (English)](datasheet//GT911_EN_Datasheet.pdf)
+- [ESP32-S3-WROOM-1 Datasheet (Chinese)](datasheet/esp32-s3-wroom-1_wroom-1u_datasheet_cn.pdf)
+- [ESP32-S3-WROOM-1 Datasheet (English)](datasheet/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf)
+
+---
+
+## 6. firmware download
+1. Open the project file "tools" and locate the ESP32 burning tool. Open it.
+
+2. Select the correct burning chip and burning method, then click "OK." As shown in the picture, follow steps 1->2->3->4->5 to burn the program. If the burning is not successful, press and hold the "BOOT-0" button and then download and burn again.
 
 3. Burn the file in the root directory of the project file "[firmware](./firmware/)" file,There is a description of the firmware file version inside, just choose the appropriate version to download.
 
@@ -216,7 +302,9 @@ TODO: This section is outdated:
     <img src="image/11.png" alt="example">
 </p>
 
-## FAQ
+---
+
+## 7. FAQ
 
 * Q. After reading the above tutorials, I still don't know how to build a programming environment. What should I do?
 * A. If you still don't understand how to build an environment after reading the above tutorials, you can refer to the [VIEWE-FAQ]() document instructions to build it.
@@ -228,13 +316,13 @@ TODO: This section is outdated:
 
 <br />
 
-* Q. Why is there no serial data output on the `Uart` interface on my board? Is it defective and unusable?
-* A. The default project configuration uses the USB interface as Uart0 serial output for debugging purposes. The `Uart` interface is connected to Uart0, so it won't output any data without configuration.<br />For PlatformIO users, please open the project file `platformio.ini` and modify the option under `build_flags = xxx` from `-D ARDUINO_USB_CDC_ON_BOOT=true` to `-D ARDUINO_USB_CDC_ON_BOOT=false` to enable external `Uart` interface.<br />For Arduino users, open the `Tools` menu and select `USB CDC On Boot: Disabled` to enable the external `Uart` interface.
+* Q. Why is there no serial data output on the "Uart" interface on my board? Is it defective and unusable?
+* A. The default project configuration uses the USB interface as Uart0 serial output for debugging purposes. The "Uart" interface is connected to Uart0, so it won't output any data without configuration.<br />For PlatformIO users, please open the project file "platformio.ini" and modify the option under "build_flags = xxx" from "-D ARDUINO_USB_CDC_ON_BOOT=true" to "-D ARDUINO_USB_CDC_ON_BOOT=false" to enable external "Uart" interface.<br />For Arduino users, open the "Tools" menu and select "USB CDC On Boot: Disabled" to enable the external "Uart" interface.
 
 <br />
 
 * Q. Why is my board continuously failing to download the program?
-* A. Please hold down the `BOOT` button and try downloading the program again.
+* A. Please hold down the "BOOT" button and try downloading the program again.
 
 
 

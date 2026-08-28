@@ -1,6 +1,6 @@
 {
     "idf.adapterTargetName": "esp32s3",
-    "idf.portWin": "COM6",
+    "idf.portWin": "COM3",
     "idf.flashType": "UART",
     "files.associations": {
         "ui.h": "c",
@@ -18,5 +18,7 @@
     "idf.openOcdConfigs": [
         "interface/ftdi/esp32_devkitj_v1.cfg",
         "target/esp32.cfg"
-    ]
+    ],
+    "idf.currentSetup": "D:\\idf\\.espressif\\v5.5.4\\esp-idf",
+    "idf.customExtraVars": {}
 }

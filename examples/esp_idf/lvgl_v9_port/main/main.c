@@ -38,7 +38,7 @@ void draw_line(int x1, int y1, int x2, int y2) {
     if (line_count >= MAX_LINES) return; // 超过最大线条数量
 
     lv_obj_t *line = lv_line_create(lv_scr_act());
-    static lv_point_t points[2];
+    static lv_point_precise_t points[2];
     points[0].x = x1;
     points[0].y = y1;
     points[1].x = x2;
@@ -279,9 +279,9 @@ void app_main(void)
     ESP_LOGI(TAG, "LCD HW initialization completed.");
 
     /* Touch initialization */
-    // ESP_LOGI(TAG, "Starting Touch initialization...");
+    ESP_LOGI(TAG, "Starting Touch initialization...");
     ESP_ERROR_CHECK(app_touch_init());
-    // ESP_LOGI(TAG, "Touch initialization completed.");
+    ESP_LOGI(TAG, "Touch initialization completed.");
 
 
     /* LVGL initialization */
@@ -294,8 +294,8 @@ void app_main(void)
 	ESP_LOGI(TAG, "Creating LVGL objects...");
 	 /* Show LVGL objects */
     lvgl_port_lock(0);
-    lv_demo_music();
-	// lv_demo_widgets();
+    // lv_demo_music();
+	lv_demo_widgets();
     // lv_demo_benchmark();
 
 	lvgl_port_unlock();
